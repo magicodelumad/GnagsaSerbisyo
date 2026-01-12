@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>G sa Serbisyo: Information System 2026</title>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <h1 class="title">G sa Serbisyo: Information System 2026</h1>
+  </div>
+</section>
+
+<div class="container mt-5">
+
+<form id="form" autocomplete="off">
+
+  <input class="input mb-2" name="Address" placeholder="Address" required>
+
+  <div class="select mb-2">
+    <select name="Barangay" required>
+      <option value="">Select Barangay</option>
+      <option>Bagbaguin</option>
+      <option>Gen. T. De Leon</option>
+      <option>Karuhatan</option>
+      <option>Mapulang Lupa</option>
+      <option>Marulas</option>
+      <option>Maysan</option>
+      <option>Parada</option>
+      <option>Paso De Blas</option>
+      <option>Ugong</option>
+    </select>
+  </div>
+
+  <input class="input mb-2" name="First Name" placeholder="First Name" required>
+  <input class="input mb-2" name="Middle Name" placeholder="Middle Name">
+  <input class="input mb-2" name="Last Name" placeholder="Last Name" required>
+
+  <div class="mb-2">
+    <label><input type="radio" name="Gender" value="Male" required> Male</label>
+    <label class="ml-3"><input type="radio" name="Gender" value="Female"> Female</label>
+  </div>
+
+  <input class="input mb-2" type="date" name="Date of Birth" required>
+  <input class="input mb-2" name="Contact No." placeholder="09XXXXXXXXX" required>
+
+  <div class="select mb-2">
+    <select name="Received By" required>
+      <option value="">Received By</option>
+      <option>Juday</option>
+      <option>Jhanice</option>
+      <option>Oyeng</option>
+      <option>Narda</option>
+      <option>Chad</option>
+    </select>
+  </div>
+
+  <!-- RECEIVED DATE -->
+  <input class="input mb-3" type="date" id="receivedDate" name="Received Date" required>
+
+  <!-- FILE -->
+  <input type="file" id="fileInput">
+  <p id="fileName">No file selected</p>
+
+  <!-- BUTTONS -->
+  <div class="buttons mt-3">
+    <button class="button is-primary" id="submitBtn">Submit</button>
+    <button type="button" class="button is-danger" id="cancelBtn">Cancel</button>
+  </div>
+
+</form>
+
+<!-- MESSAGE -->
+<div id="msg" class="notification is-hidden mt-4"></div>
+
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbwfuG_bF0eqiDOosNVN7K8sIBNaeYBoNGhML05o1OMTWUX8YBs2x7aBTPYPqRXFH23OJQ/exec";
+
+const form = document.getElementById("form");
+const fileInput = document.getElementById("fileInput");
+const receivedDate = document.getElementById("receivedDate");
+const msg = document.getElementById("msg");
+const cancelBtn = document.getElementById("cancelBtn");
+
+// ===== SET RECEIVED DATE TO TODAY =====
+const today = new Date().toISOString().split("T")[0];
+receivedDate.value = today;
+receivedDate.min = today;
+receivedDate.max = today;
+
+// ===== FILE NAME DISPLAY =====
+fileInput.onchange = () => {
+  document.getElementById("fileName").innerText =
+    fileInput.files[0]?.name || "No file selected";
+};
+
+// ===== CANCEL BUTTON =====
+cancelBtn.onclick = () => {
+  form.reset();
+  receivedDate.value = today;
+  document.getElementById("fileName").innerText = "No file selected";
+  msg.classList.add("is-hidden");
+};
+
+// ===== FORM SUBMIT =====
+form.onsubmit = async (e) => {
+  e.preventDefault();
+
+  // 🔴 VALIDATE RECEIVED DATE
+  if (receivedDate.value !== today) {
+    msg.className = "notification is-danger";
+    msg.textContent = "❌ Received Date must be TODAY only.";
+    msg.classList.remove("is-hidden");
+    return;
+  }
+
+  msg.className = "notification is-info";
+  msg.textContent = "Submitting...";
+  msg.classList.remove("is-hidden");
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async () => {
+      const base64 = reader.result.split(",");
+      data.fileData = {
+        fileName: file.name,
+        mimeType: base64[0].match(/:(.*);/)[1],
+        data: base64[1]
+      };
+      submitData(data);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    submitData(data);
+  }
+};
+
+async function submitData(data) {
+  const res = await fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  const json = await res.json();
+
+  if (json.status === "success") {
+    form.reset();
+    form.style.display = "none";
+    msg.className = "notification is-success";
+    msg.textContent = "✅ Data successfully submitted. Thank you!";
+  } else {
+    msg.className = "notification is-danger";
+    msg.textContent = "❌ Error: " + json.message;
+  }
+}
+</script>
+
+</body>
+</html>
