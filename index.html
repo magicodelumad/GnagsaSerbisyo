@@ -3,14 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <title>G sa Serbisyo: Information System 2026</title>
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <style>
+    /* ===== HEADER GRADIENT ===== */
+    .hero.is-primary {
+      background: linear-gradient(135deg, #34D399, #10B981);
+    }
+
+    /* ===== BODY ===== */
+    body {
+      background-color: #f0fdf4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* ===== FORM ===== */
+    form {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    input.input, select.select select, .buttons .button {
+      border-radius: 8px;
+    }
+
+    input.input:focus, select.select select:focus {
+      border-color: #10B981 !important;
+      box-shadow: 0 0 5px rgba(16,185,129,0.5);
+    }
+
+    .buttons .button.is-primary {
+      background-color: #10B981;
+      border-color: transparent;
+      transition: background 0.3s;
+    }
+
+    .buttons .button.is-primary:hover {
+      background-color: #059669;
+    }
+
+    .buttons .button.is-danger {
+      border-radius: 8px;
+    }
+
+    /* ===== MESSAGE ===== */
+    .notification {
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    /* ===== SEARCH BAR ===== */
+    #searchInput {
+      border-radius: 8px;
+      padding: 0.75rem;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* ===== TABLE ===== */
+    table {
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    table thead {
+      background: #10B981;
+      color: white;
+    }
+
+    table tbody tr:hover {
+      background-color: #d1fae5;
+    }
+
+    table td, table th {
+      padding: 0.75rem 1rem;
+    }
+
+    hr {
+      border-top: 2px solid #10B981;
+      margin: 2rem 0;
+    }
+  </style>
 </head>
 
 <body>
+
 <section class="hero is-primary">
   <div class="hero-body">
-    <h1 class="title">G sa Serbisyo: Information System 2026</h1>
+    <h1 class="title has-text-white">G sa Serbisyo: Information System 2026</h1>
   </div>
 </section>
 
@@ -20,7 +103,7 @@
 
   <input class="input mb-2" name="Address" placeholder="Address" required>
 
-  <div class="select mb-2">
+  <div class="select mb-2 is-fullwidth">
     <select name="Barangay" required>
       <option value="">Select Barangay</option>
       <option>Bagbaguin</option>
@@ -47,7 +130,7 @@
   <input class="input mb-2" type="date" name="Date of Birth" required>
   <input class="input mb-2" name="Contact No." placeholder="09XXXXXXXXX" required>
 
-  <div class="select mb-2">
+  <div class="select mb-2 is-fullwidth">
     <select name="Received By" required>
       <option value="">Received By</option>
       <option>Juday</option>
@@ -58,14 +141,11 @@
     </select>
   </div>
 
-  <!-- RECEIVED DATE -->
   <input class="input mb-3" type="date" id="receivedDate" name="Received Date" required>
 
-  <!-- FILE -->
   <input type="file" id="fileInput">
   <p id="fileName">No file selected</p>
 
-  <!-- BUTTONS -->
   <div class="buttons mt-3">
     <button class="button is-primary" id="submitBtn">Submit</button>
     <button type="button" class="button is-danger" id="cancelBtn">Cancel</button>
@@ -73,8 +153,33 @@
 
 </form>
 
-<!-- MESSAGE -->
 <div id="msg" class="notification is-hidden mt-4"></div>
+
+<hr class="my-5">
+
+<!-- SEARCH BAR -->
+<div class="field">
+  <label class="label">Search Records</label>
+  <div class="control">
+    <input class="input" id="searchInput" type="text"
+      placeholder="Search by name, address, barangay, contact number">
+  </div>
+</div>
+
+<!-- HISTORY TABLE -->
+<table class="table is-fullwidth is-striped is-hoverable">
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Barangay</th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Date of Birth</th>
+      <th>Contact No.</th>
+    </tr>
+  </thead>
+  <tbody id="recordsTable"></tbody>
+</table>
 
 </div>
 
@@ -86,6 +191,16 @@ const fileInput = document.getElementById("fileInput");
 const receivedDate = document.getElementById("receivedDate");
 const msg = document.getElementById("msg");
 const cancelBtn = document.getElementById("cancelBtn");
+const tableBody = document.getElementById("recordsTable");
+const searchInput = document.getElementById("searchInput");
+
+let records = [];
+
+// ===== LOAD FROM LOCALSTORAGE =====
+if(localStorage.getItem("records")) {
+  records = JSON.parse(localStorage.getItem("records"));
+  renderTable(records);
+}
 
 // ===== SET RECEIVED DATE TO TODAY =====
 const today = new Date().toISOString().split("T")[0];
@@ -107,14 +222,57 @@ cancelBtn.onclick = () => {
   msg.classList.add("is-hidden");
 };
 
+// ===== RENDER TABLE =====
+function renderTable(data) {
+  tableBody.innerHTML = "";
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.Address}</td>
+      <td>${item.Barangay}</td>
+      <td>${item.Name}</td>
+      <td>${item.Gender}</td>
+      <td>${item.Birthdate}</td>
+      <td>${item.Contact}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// ===== SEARCH =====
+searchInput.addEventListener("keyup", () => {
+  const keyword = searchInput.value.toLowerCase();
+  const filtered = records.filter(r =>
+    Object.values(r).join(" ").toLowerCase().includes(keyword)
+  );
+  renderTable(filtered);
+});
+
+// ===== CHECK DUPLICATE =====
+function isDuplicate(first, middle, last) {
+  return records.some(r =>
+    r.Name.toLowerCase() === `${first} ${middle || ""} ${last}`.toLowerCase()
+  );
+}
+
 // ===== FORM SUBMIT =====
 form.onsubmit = async (e) => {
   e.preventDefault();
 
-  // 🔴 VALIDATE RECEIVED DATE
   if (receivedDate.value !== today) {
     msg.className = "notification is-danger";
     msg.textContent = "❌ Received Date must be TODAY only.";
+    msg.classList.remove("is-hidden");
+    return;
+  }
+
+  const first = form["First Name"].value.trim();
+  const middle = form["Middle Name"].value.trim();
+  const last = form["Last Name"].value.trim();
+
+  if (isDuplicate(first, middle, last)) {
+    msg.className = "notification is-danger";
+    msg.textContent = "❌ Duplicate entry: Name already exists!";
     msg.classList.remove("is-hidden");
     return;
   }
@@ -154,10 +312,24 @@ async function submitData(data) {
   const json = await res.json();
 
   if (json.status === "success") {
+    const entry = {
+      Address: data["Address"],
+      Barangay: data["Barangay"],
+      Name: `${data["First Name"]} ${data["Middle Name"] || ""} ${data["Last Name"]}`,
+      Gender: data["Gender"],
+      Birthdate: data["Date of Birth"],
+      Contact: data["Contact No."]
+    };
+
+    records.push(entry);
+    localStorage.setItem("records", JSON.stringify(records));
+    renderTable(records);
+
     form.reset();
-    form.style.display = "none";
+    receivedDate.value = today;
+
     msg.className = "notification is-success";
-    msg.textContent = "✅ Data successfully submitted. Thank you!";
+    msg.textContent = "✅ Data successfully submitted and added to list.";
   } else {
     msg.className = "notification is-danger";
     msg.textContent = "❌ Error: " + json.message;
