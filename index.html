@@ -1,91 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>G sa Serbisyo: Information System 2026</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<meta charset="UTF-8">
+<title>G sa Serbisyo: Information System 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-  <style>
-    /* HEADER GRADIENT */
-    .hero.is-primary {
-      background: linear-gradient(135deg, #34D399, #10B981);
-    }
-
-    body {
-      background-color: #f0fdf4;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    form {
-      background: #ffffff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    input.input, select.select select, .buttons .button {
-      border-radius: 8px;
-    }
-
-    input.input:focus, select.select select:focus {
-      border-color: #10B981 !important;
-      box-shadow: 0 0 5px rgba(16,185,129,0.5);
-    }
-
-    .buttons .button.is-primary {
-      background-color: #10B981;
-      border-color: transparent;
-      transition: background 0.3s;
-    }
-
-    .buttons .button.is-primary:hover {
-      background-color: #059669;
-    }
-
-    .buttons .button.is-danger {
-      border-radius: 8px;
-    }
-
-    .notification {
-      border-radius: 10px;
-      font-weight: 500;
-    }
-
-    #searchInput {
-      border-radius: 8px;
-      padding: 0.75rem;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    table {
-      background: #ffffff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    table thead {
-      background: #10B981;
-      color: white;
-    }
-
-    table tbody tr:hover {
-      background-color: #d1fae5;
-    }
-
-    table td, table th {
-      padding: 0.75rem 1rem;
-    }
-
-    hr {
-      border-top: 2px solid #10B981;
-      margin: 2rem 0;
-    }
-  </style>
+<style>
+.hero.is-primary { background: linear-gradient(135deg, #34D399, #10B981); }
+body { background-color: #f0fdf4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+form { background: #ffffff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+input.input, select.select select, .buttons .button { border-radius: 8px; }
+input.input:focus, select.select select:focus { border-color: #10B981 !important; box-shadow: 0 0 5px rgba(16,185,129,0.5); }
+.buttons .button.is-primary { background-color: #10B981; border-color: transparent; transition: background 0.3s; }
+.buttons .button.is-primary:hover { background-color: #059669; }
+.buttons .button.is-danger { border-radius: 8px; }
+.notification { border-radius: 10px; font-weight: 500; }
+#searchInput { border-radius: 8px; padding: 0.75rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1rem; }
+table { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; }
+table thead { background: #10B981; color: white; }
+table tbody tr:hover { background-color: #d1fae5; }
+table td, table th { padding: 0.75rem 1rem; }
+hr { border-top: 2px solid #10B981; margin: 2rem 0; }
+@media screen and (max-width: 768px){
+  table, thead, tbody, th, td, tr { display: block; }
+  th { position: absolute; top: -9999px; left: -9999px; }
+  td { border: none; position: relative; padding-left: 50%; margin-bottom: 10px; }
+  td:before { position: absolute; top: 0; left: 6px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; }
+  td:nth-of-type(1):before { content: "Timestamp"; }
+  td:nth-of-type(2):before { content: "Address"; }
+  td:nth-of-type(3):before { content: "Barangay"; }
+  td:nth-of-type(4):before { content: "Name"; }
+  td:nth-of-type(5):before { content: "Gender"; }
+  td:nth-of-type(6):before { content: "Date of Birth"; }
+  td:nth-of-type(7):before { content: "Age"; }
+  td:nth-of-type(8):before { content: "Contact"; }
+  td:nth-of-type(9):before { content: "Assistance"; }
+  td:nth-of-type(10):before { content: "Received By"; }
+  td:nth-of-type(11):before { content: "Received Date"; }
+}
+</style>
 </head>
-
 <body>
-
 <section class="hero is-primary">
   <div class="hero-body">
     <h1 class="title has-text-white">G sa Serbisyo: Information System 2026</h1>
@@ -93,96 +48,70 @@
 </section>
 
 <div class="container mt-5">
-
 <form id="form" autocomplete="off">
-
   <input class="input mb-2" name="Address" placeholder="Address" required>
-
   <div class="select mb-2 is-fullwidth">
     <select name="Barangay" required>
       <option value="">Select Barangay</option>
-      <option>Bagbaguin</option>
-      <option>Gen. T. De Leon</option>
-      <option>Karuhatan</option>
-      <option>Mapulang Lupa</option>
-      <option>Marulas</option>
-      <option>Maysan</option>
-      <option>Parada</option>
-      <option>Paso De Blas</option>
-      <option>Ugong</option>
+      <option>Bagbaguin</option><option>Gen. T. De Leon</option><option>Karuhatan</option>
+      <option>Mapulang Lupa</option><option>Marulas</option><option>Maysan</option>
+      <option>Parada</option><option>Paso De Blas</option><option>Ugong</option>
     </select>
   </div>
-
   <input class="input mb-2" name="First Name" placeholder="First Name" required>
   <input class="input mb-2" name="Middle Name" placeholder="Middle Name">
   <input class="input mb-2" name="Last Name" placeholder="Last Name" required>
-
   <div class="mb-2">
     <label><input type="radio" name="Gender" value="Male" required> Male</label>
     <label class="ml-3"><input type="radio" name="Gender" value="Female"> Female</label>
   </div>
-
   <input class="input mb-2" type="date" name="Date of Birth" required>
   <input class="input mb-2" name="Contact No." placeholder="09XXXXXXXXX" required>
-
   <div class="select mb-2 is-fullwidth">
     <select name="Received By" required>
       <option value="">Received By</option>
-      <option>Juday</option>
-      <option>Jhanice</option>
-      <option>Oyeng</option>
-      <option>Narda</option>
-      <option>Chad</option>
+      <option>Juday</option><option>Jhanice</option><option>Oyeng</option>
+      <option>Narda</option><option>Chad</option>
     </select>
   </div>
-
+  <div class="select mb-2 is-fullwidth">
+    <select name="Assistance Needed" required>
+      <option value="">Select Assistance Needed</option>
+      <option>Burial</option><option>Medical</option><option>Educational</option>
+    </select>
+  </div>
   <input class="input mb-3" type="date" id="receivedDate" name="Received Date" required>
-
-  <input type="file" id="fileInput">
-  <p id="fileName">No file selected</p>
-
   <div class="buttons mt-3">
     <button class="button is-primary" id="submitBtn">Submit</button>
     <button type="button" class="button is-danger" id="cancelBtn">Cancel</button>
   </div>
-
 </form>
 
 <div id="msg" class="notification is-hidden mt-4"></div>
-
 <hr class="my-5">
 
-<!-- SEARCH BAR -->
 <div class="field">
   <label class="label">Search Records</label>
   <div class="control">
-    <input class="input" id="searchInput" type="text"
-      placeholder="Search by name, address, barangay, contact number">
+    <input class="input" id="searchInput" type="text" placeholder="Search by name, address, barangay, contact number, assistance, received by">
   </div>
 </div>
 
-<!-- HISTORY TABLE -->
 <table class="table is-fullwidth is-striped is-hoverable">
   <thead>
     <tr>
-      <th>Address</th>
-      <th>Barangay</th>
-      <th>Name</th>
-      <th>Gender</th>
-      <th>Date of Birth</th>
-      <th>Contact No.</th>
+      <th>Timestamp</th><th>Address</th><th>Barangay</th><th>Name</th><th>Gender</th>
+      <th>Date of Birth</th><th>Age</th><th>Contact No.</th><th>Assistance Needed</th>
+      <th>Received By</th><th>Received Date</th>
     </tr>
   </thead>
   <tbody id="recordsTable"></tbody>
 </table>
-
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbwfuG_bF0eqiDOosNVN7K8sIBNaeYBoNGhML05o1OMTWUX8YBs2x7aBTPYPqRXFH23OJQ/exec";
-
+const scriptURL = "https://script.google.com/macros/s/AKfycbyKOiF_MoJzATzLSOhFSsTWdgU-ZJoGBAuJeM37LB7zDC19WahnfRGp117hrGxFlwCQlg/exec";
 const form = document.getElementById("form");
-const fileInput = document.getElementById("fileInput");
 const receivedDate = document.getElementById("receivedDate");
 const msg = document.getElementById("msg");
 const cancelBtn = document.getElementById("cancelBtn");
@@ -190,165 +119,103 @@ const tableBody = document.getElementById("recordsTable");
 const searchInput = document.getElementById("searchInput");
 
 let records = [];
-
-// ===== SET RECEIVED DATE TO TODAY =====
 const today = new Date().toISOString().split("T")[0];
 receivedDate.value = today;
 receivedDate.min = today;
 receivedDate.max = today;
 
-// ===== FILE NAME DISPLAY =====
-fileInput.onchange = () => {
-  document.getElementById("fileName").innerText =
-    fileInput.files[0]?.name || "No file selected";
-};
+cancelBtn.onclick = () => { form.reset(); receivedDate.value = today; msg.classList.add("is-hidden"); };
 
-// ===== CANCEL BUTTON =====
-cancelBtn.onclick = () => {
-  form.reset();
-  receivedDate.value = today;
-  document.getElementById("fileName").innerText = "No file selected";
-  msg.classList.add("is-hidden");
-};
-
-// ===== RENDER TABLE =====
-function renderTable(data) {
+function renderTable(data){
   tableBody.innerHTML = "";
-  data.forEach(item => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${item.Address}</td>
-      <td>${item.Barangay}</td>
-      <td>${item.Name}</td>
-      <td>${item.Gender}</td>
-      <td>${item.Birthdate}</td>
-      <td>${item.Contact}</td>
-    `;
+  data.forEach(item=>{
+    const row=document.createElement("tr");
+    row.innerHTML=`<td>${item.Timestamp}</td><td>${item.Address}</td><td>${item.Barangay}</td><td>${item.Name}</td>
+      <td>${item.Gender}</td><td>${item.Birthdate}</td><td>${item.Age}</td><td>${item.Contact}</td>
+      <td>${item.Assistance}</td><td>${item.ReceivedBy}</td><td>${item.ReceivedDate}</td>`;
     tableBody.appendChild(row);
   });
 }
 
-// ===== LOAD EXISTING RECORDS FROM GOOGLE SHEET =====
-async function loadRecords() {
-  try {
-    const res = await fetch(scriptURL + '?action=get'); // GET all records
+async function loadRecords(){
+  try{
+    const res = await fetch(scriptURL);
     const json = await res.json();
-    if (json.status === 'success') {
-      records = json.data.map(r => ({
+    if(json.status==='success'){
+      records=json.data.map(r=>({
+        Timestamp: r.Timestamp,
         Address: r.Address,
         Barangay: r.Barangay,
-        Name: `${r["First Name"]} ${r["Middle Name"] || ""} ${r["Last Name"]}`,
+        Name: `${r["First Name"]} ${r["Middle Name"]||""} ${r["Last Name"]}`,
         Gender: r.Gender,
         Birthdate: r["Date of Birth"],
-        Contact: r["Contact No."]
+        Age: r.Age,
+        Contact: r["Contact No."],
+        Assistance: r["Assistance Needed"],
+        ReceivedBy: r["Received By"],
+        ReceivedDate: r["Received Date"]
       }));
       renderTable(records);
     }
-  } catch (err) {
-    console.error('Error loading records:', err);
-  }
+  }catch(err){ console.error(err); }
 }
-
-// Load records on page load
 loadRecords();
 
-// ===== SEARCH =====
-searchInput.addEventListener("keyup", () => {
+searchInput.addEventListener("keyup",()=>{
   const keyword = searchInput.value.toLowerCase();
-  const filtered = records.filter(r =>
-    Object.values(r).join(" ").toLowerCase().includes(keyword)
-  );
+  const filtered = records.filter(r=> Object.values(r).join(" ").toLowerCase().includes(keyword));
   renderTable(filtered);
 });
 
-// ===== CHECK DUPLICATE =====
-function isDuplicate(first, middle, last) {
-  return records.some(r =>
-    r.Name.toLowerCase() === `${first} ${middle || ""} ${last}`.toLowerCase()
-  );
+function isDuplicate(first,middle,last){
+  return records.some(r=>r.Name.toLowerCase()===`${first} ${middle||""} ${last}`.toLowerCase());
 }
 
-// ===== FORM SUBMIT =====
-form.onsubmit = async (e) => {
+form.onsubmit = async e=>{
   e.preventDefault();
+  if(receivedDate.value!==today){ msg.className="notification is-danger"; msg.textContent="❌ Received Date must be TODAY only."; msg.classList.remove("is-hidden"); return; }
+  const first=form["First Name"].value.trim();
+  const middle=form["Middle Name"].value.trim();
+  const last=form["Last Name"].value.trim();
+  if(isDuplicate(first,middle,last)){ msg.className="notification is-danger"; msg.textContent="❌ Duplicate name entry!"; msg.classList.remove("is-hidden"); return; }
 
-  if (receivedDate.value !== today) {
-    msg.className = "notification is-danger";
-    msg.textContent = "❌ Received Date must be TODAY only.";
-    msg.classList.remove("is-hidden");
-    return;
-  }
+  msg.className="notification is-info"; msg.textContent="Submitting..."; msg.classList.remove("is-hidden");
+  const fd=new FormData(form);
+  const data=Object.fromEntries(fd.entries());
 
-  const first = form["First Name"].value.trim();
-  const middle = form["Middle Name"].value.trim();
-  const last = form["Last Name"].value.trim();
+  const res=await fetch(scriptURL,{ method:"POST", body:JSON.stringify(data) });
+  const json=await res.json();
 
-  if (isDuplicate(first, middle, last)) {
-    msg.className = "notification is-danger";
-    msg.textContent = "❌ Duplicate entry: Name already exists!";
-    msg.classList.remove("is-hidden");
-    return;
-  }
+  if(json.status==="success"){
+    const birthDate=new Date(data["Date of Birth"]);
+    const ageDifMs=Date.now()-birthDate.getTime();
+    const ageDate=new Date(ageDifMs);
+    const age=Math.abs(ageDate.getUTCFullYear()-1970);
 
-  msg.className = "notification is-info";
-  msg.textContent = "Submitting...";
-  msg.classList.remove("is-hidden");
-
-  const fd = new FormData(form);
-  const data = Object.fromEntries(fd.entries());
-
-  if (fileInput.files.length > 0) {
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-
-    reader.onload = async () => {
-      const base64 = reader.result.split(",");
-      data.fileData = {
-        fileName: file.name,
-        mimeType: base64[0].match(/:(.*);/)[1],
-        data: base64[1]
-      };
-      submitData(data);
+    const entry={
+      Timestamp: new Date().toLocaleString(),
+      Address:data["Address"],
+      Barangay:data["Barangay"],
+      Name:`${data["First Name"]} ${data["Middle Name"]||""} ${data["Last Name"]}`,
+      Gender:data["Gender"],
+      Birthdate:data["Date of Birth"],
+      Age:age,
+      Contact:data["Contact No."],
+      Assistance:data["Assistance Needed"],
+      ReceivedBy:data["Received By"],
+      ReceivedDate:data["Received Date"]
     };
-    reader.readAsDataURL(file);
-  } else {
-    submitData(data);
-  }
-};
-
-async function submitData(data) {
-  const res = await fetch(scriptURL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
-
-  const json = await res.json();
-
-  if (json.status === "success") {
-    const entry = {
-      Address: data["Address"],
-      Barangay: data["Barangay"],
-      Name: `${data["First Name"]} ${data["Middle Name"] || ""} ${data["Last Name"]}`,
-      Gender: data["Gender"],
-      Birthdate: data["Date of Birth"],
-      Contact: data["Contact No."]
-    };
-
-    // Add to table and array
     records.push(entry);
     renderTable(records);
-
     form.reset();
-    receivedDate.value = today;
-
-    msg.className = "notification is-success";
-    msg.textContent = "✅ Data successfully submitted and added to list.";
-  } else {
-    msg.className = "notification is-danger";
-    msg.textContent = "❌ Error: " + json.message;
+    receivedDate.value=today;
+    msg.className="notification is-success";
+    msg.textContent="✅ Data successfully submitted and added to list.";
+  }else{
+    msg.className="notification is-danger";
+    msg.textContent="❌ Error: "+json.message;
   }
-}
+};
 </script>
-
 </body>
 </html>
