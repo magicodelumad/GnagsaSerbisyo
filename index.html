@@ -101,6 +101,8 @@ hr {
   td:nth-of-type(9):before { content: "Assistance"; }
   td:nth-of-type(10):before { content: "Received By"; }
   td:nth-of-type(11):before { content: "Received Date"; }
+  td:nth-of-type(12):before { content: "Status"; }
+
 }
 </style>
 </head>
@@ -136,7 +138,21 @@ hr {
   </div>
 </div>
 
-  <input class="input mb-2" name="Contact No." placeholder="09XXXXXXXXX" required>
+  <div class="field mb-2">
+    <label class="label">Contact Number</label>
+    <div class="control">
+      <input
+        class="input"
+        name="Contact No."
+        placeholder="09XXXXXXXXX"
+        required
+        inputmode="numeric"
+        pattern="\d{11}"
+        maxlength="12"
+        title="Contact number must be exactly 12 digits (e.g. 09XXXXXXXXX)">
+    </div>
+</div>
+
   <div class="select mb-2 is-fullwidth">
     <select name="Received By" required>
       <option value="">Received By</option>
@@ -178,7 +194,8 @@ hr {
     <tr>
       <th>Timestamp</th><th>Address</th><th>Barangay</th><th>Name</th><th>Gender</th>
       <th>Date of Birth</th><th>Age</th><th>Contact No.</th><th>Assistance Needed</th>
-      <th>Received By</th><th>Received Date</th>
+      <th>Received By</th><th>Received Date</th><th>Status</th>
+
     </tr>
   </thead>
   <tbody id="recordsTable"></tbody>
@@ -207,13 +224,69 @@ cancelBtn.onclick = () => {
 };
 
 
+function formatPHDateTime(dateStr){
+  const d = new Date(dateStr);
+  return d.toLocaleString("en-PH", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
+}
+
+function formatDateOnly(dateStr){
+  if(!dateStr) return "";
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-PH", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit"
+  });
+}
+
+function calculateExactAge(birthDate){
+  if(!birthDate) return "";
+
+  const today = new Date();
+  const birth = new Date(birthDate);
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  const dayDiff = today.getDate() - birth.getDate();
+
+  // If birthday has NOT occurred yet this year
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age--;
+  }
+
+  return age;
+}
+
+
+
+
 function renderTable(data){
   tableBody.innerHTML = "";
   data.forEach(item=>{
     const row=document.createElement("tr");
-    row.innerHTML=`<td>${item.Timestamp}</td><td>${item.Address}</td><td>${item.Barangay}</td><td>${item.Name}</td>
-      <td>${item.Gender}</td><td>${item.Birthdate}</td><td>${item.Age}</td><td>${item.Contact}</td>
-      <td>${item.Assistance}</td><td>${item.ReceivedBy}</td><td>${item.ReceivedDate}</td>`;
+row.innerHTML = `
+  <td>${formatPHDateTime(item.Timestamp)}</td>
+  <td>${item.Address}</td>
+  <td>${item.Barangay}</td>
+  <td>${item.Name}</td>
+  <td>${item.Gender}</td>
+  <td>${formatDateOnly(item.Birthdate)}</td>
+  <td>${calculateExactAge(item.Birthdate)}</td>
+  <td>${item.Contact}</td>
+  <td>${item.Assistance}</td>
+  <td>${item.ReceivedBy}</td>
+  <td>${formatDateOnly(item.ReceivedDate)}</td>
+  <td>${item.Status}</td>
+`;
+
     tableBody.appendChild(row);
   });
 }
@@ -230,11 +303,13 @@ async function loadRecords(){
         Name: `${r["First Name"]} ${r["Middle Name"]||""} ${r["Last Name"]}`,
         Gender: r.Gender,
         Birthdate: r["Date of Birth"],
-        Age: r.Age,
+        Age: calculateExactAge(r["Date of Birth"]),
         Contact: r["Contact No."],
         Assistance: r["Assistance Needed"],
         ReceivedBy: r["Received By"],
-        ReceivedDate: r["Received Date"]
+        ReceivedDate: r["Received Date"],
+        Status: r.Status || "Not Claimed"
+
       }));
       renderTable(records);
     }
@@ -252,51 +327,96 @@ function isDuplicate(first,middle,last){
   return records.some(r=>r.Name.toLowerCase()===`${first} ${middle||""} ${last}`.toLowerCase());
 }
 
-form.onsubmit = async e=>{
+function validateForm() {
+  const contact = form["Contact No."].value.trim();
+  const birthDate = form["Date of Birth"].value;
+  const received = form["Received Date"].value;
+
+  // Contact number validation
+  if (!/^\d{11}$/.test(contact)) {
+    showError("❌ Contact number must be EXACTLY 12 digits (639XXXXXXXXX).");
+    return false;
+  }
+
+  // Birthdate validation
+  if (!birthDate || new Date(birthDate) > new Date()) {
+    showError("❌ Birthdate is invalid or in the future.");
+    return false;
+  }
+
+  // Received date validation
+  if (!received) {
+    showError("❌ Received Date is required.");
+    return false;
+  }
+
+  return true;
+}
+
+function showError(message) {
+  msg.className = "notification is-danger";
+  msg.textContent = message;
+  msg.classList.remove("is-hidden");
+}
+
+
+
+form.onsubmit = async e => {
   e.preventDefault();
-  //if(receivedDate.value!==today){ msg.className="notification is-danger"; msg.textContent="❌ Received Date must be TODAY only."; msg.classList.remove("is-hidden"); return; }
-  const first=form["First Name"].value.trim();
-  const middle=form["Middle Name"].value.trim();
-  const last=form["Last Name"].value.trim();
-  if(isDuplicate(first,middle,last)){ msg.className="notification is-danger"; msg.textContent="❌ Duplicate name entry!"; msg.classList.remove("is-hidden"); return; }
 
-  msg.className="notification is-info"; msg.textContent="Submitting..."; msg.classList.remove("is-hidden");
-  const fd=new FormData(form);
-  const data=Object.fromEntries(fd.entries());
+  // 🔒 WEBSITE VALIDATION FIRST
+  if (!validateForm()) return;
 
-  const res=await fetch(scriptURL,{ method:"POST", body:JSON.stringify(data) });
-  const json=await res.json();
+  const first = form["First Name"].value.trim();
+  const middle = form["Middle Name"].value.trim();
+  const last = form["Last Name"].value.trim();
 
-  if(json.status==="success"){
-    const birthDate=new Date(data["Date of Birth"]);
-    const ageDifMs=Date.now()-birthDate.getTime();
-    const ageDate=new Date(ageDifMs);
-    const age=Math.abs(ageDate.getUTCFullYear()-1970);
+  if (isDuplicate(first, middle, last)) {
+    showError("❌ Duplicate name entry!");
+    return;
+  }
 
-    const entry={
-      Timestamp: new Date().toLocaleString(),
-      Address:data["Address"],
-      Barangay:data["Barangay"],
-      Name:`${data["First Name"]} ${data["Middle Name"]||""} ${data["Last Name"]}`,
-      Gender:data["Gender"],
-      Birthdate:data["Date of Birth"],
-      Age:age,
-      Contact:data["Contact No."],
-      Assistance:data["Assistance Needed"],
-      ReceivedBy:data["Received By"],
-      ReceivedDate:data["Received Date"]
-    };
-    records.push(entry);
+  msg.className = "notification is-info";
+  msg.textContent = "Submitting...";
+  msg.classList.remove("is-hidden");
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+  const age = calculateExactAge(data["Date of Birth"]);
+  data.Age = Number(age);
+
+  const res = await fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  const json = await res.json();
+
+  if (json.status === "success") {
+    records.push({
+      Timestamp: new Date().toISOString(),
+      Address: data.Address,
+      Barangay: data.Barangay,
+      Name: `${data["First Name"]} ${data["Middle Name"] || ""} ${data["Last Name"]}`,
+      Gender: data.Gender,
+      Birthdate: data["Date of Birth"],
+      Age: age,
+      Contact: data["Contact No."],
+      Assistance: data["Assistance Needed"],
+      ReceivedBy: data["Received By"],
+      ReceivedDate: data["Received Date"]
+    });
+
     renderTable(records);
     form.reset();
-    receivedDate.value=today;
-    msg.className="notification is-success";
-    msg.textContent="✅ Data successfully submitted and added to list.";
-  }else{
-    msg.className="notification is-danger";
-    msg.textContent="❌ Error: "+json.message;
+    msg.className = "notification is-success";
+    msg.textContent = "✅ Data validated and saved successfully.";
+  } else {
+    showError("❌ Error saving data.");
   }
 };
+
 </script>
 </body>
 </html>
