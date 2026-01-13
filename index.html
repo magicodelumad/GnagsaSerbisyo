@@ -4,87 +4,23 @@
 <meta charset="UTF-8">
 <title>G sa Serbisyo: Information System 2026</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
 <style>
-.hero.is-primary { 
-  background: linear-gradient(135deg, #34D399, #10B981); 
-}
-
-body { background-color: #f0fdf4;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-form { 
-  background: #ffffff; 
-  padding: 2rem; 
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-}
-
-input.input, select.select select, .buttons .button { 
-  border-radius: 8px; 
-}
-
-input.input:focus, select.select select:focus { 
-  border-color: #10B981 !important;
-  box-shadow: 0 0 5px rgba(16,185,129,0.5); 
-}
-
-.buttons .button.is-primary { 
-  background-color: #10B981;
-  border-color: transparent;
-  transition: background 0.3s; 
-}
-
-.buttons .button.is-primary:hover { 
-  background-color: #059669; 
-}
-
-.buttons .button.is-danger {
-  border-radius: 8px; 
-}
-
-
-.notification { 
-  border-radius: 10px; 
-  font-weight: 500; 
-}
-
-
-#searchInput { 
-  border-radius: 8px;
-  padding: 0.75rem;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-  margin-bottom: 1rem;
-}
-
-table { 
-  background: #ffffff;
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  width: 100%; 
-}
-
-table thead { 
-  background: #10B981;
-  color: white; 
-}
-
-
-table tbody tr:hover { 
-  background-color: #d1fae5; 
-}
-
-table td, table th {
-  padding: 0.75rem 1rem; 
-}
-
-hr { 
-  border-top: 2px solid #10B981;
-  margin: 2rem 0; 
-}
-
-
+.hero.is-primary { background: linear-gradient(135deg, #34D399, #10B981); }
+body { background-color: #f0fdf4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+form { background: #ffffff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+input.input, select.select select, .buttons .button { border-radius: 8px; }
+input.input:focus, select.select select:focus { border-color: #10B981 !important; box-shadow: 0 0 5px rgba(16,185,129,0.5); }
+.buttons .button.is-primary { background-color: #10B981; border-color: transparent; transition: background 0.3s; }
+.buttons .button.is-primary:hover { background-color: #059669; }
+.buttons .button.is-danger { border-radius: 8px; }
+.buttons .button.is-warning { border-radius: 8px; }
+.notification { border-radius: 10px; font-weight: 500; }
+#searchInput { border-radius: 8px; padding: 0.75rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1rem; }
+table { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; }
+table thead { background: #10B981; color: white; }
+table tbody tr:hover { background-color: #d1fae5; }
+table td, table th { padding: 0.75rem 1rem; }
+hr { border-top: 2px solid #10B981; margin: 2rem 0; }
 @media screen and (max-width: 768px){
   table, thead, tbody, th, td, tr { display: block; }
   th { position: absolute; top: -9999px; left: -9999px; }
@@ -95,27 +31,60 @@ hr {
   td:nth-of-type(3):before { content: "Barangay"; }
   td:nth-of-type(4):before { content: "Name"; }
   td:nth-of-type(5):before { content: "Gender"; }
-  td:nth-of-type(6):before { content: "Date of Birth"; }
+  td:nth-of-type(6):before { content: "Birthdate"; }
   td:nth-of-type(7):before { content: "Age"; }
   td:nth-of-type(8):before { content: "Contact"; }
   td:nth-of-type(9):before { content: "Assistance"; }
   td:nth-of-type(10):before { content: "Received By"; }
   td:nth-of-type(11):before { content: "Received Date"; }
   td:nth-of-type(12):before { content: "Status"; }
-
 }
 </style>
 </head>
 <body>
+
 <section class="hero is-primary">
   <div class="hero-body">
-    <h1 class="title has-text-white">G na G sa Serbisyo: Assistance Information 2026</h1>
+    <h1 class="title has-text-white">G sa Serbisyo: Information System 2026</h1>
   </div>
 </section>
 
-<div class="container mt-5">
+<!-- LOGIN FORM -->
+<div id="loginContainer" class="container mt-5">
+  <form id="loginForm" autocomplete="off">
+    <div class="field mb-2">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" type="text" id="username" placeholder="Enter username" required>
+      </div>
+    </div>
+    <div class="field mb-2">
+      <label class="label">Password</label>
+      <div class="control">
+        <input class="input" type="password" id="password" placeholder="Enter password" required>
+      </div>
+    </div>
+    <div class="buttons mt-3">
+      <button class="button is-primary" type="submit">Login</button>
+    </div>
+    <div id="loginMsg" class="notification is-hidden mt-3"></div>
+  </form>
+</div>
+
+<!-- MAIN SYSTEM (HIDDEN UNTIL LOGIN) -->
+<div id="mainContent" style="display:none;" class="container mt-5">
+
+<div class="field mb-4">
+  <button id="logoutBtn" class="button is-warning">Logout</button>
+</div>
+
 <form id="form" autocomplete="off">
-  <input class="input mb-2" name="Address" placeholder="Address" required>
+  <div class="field mb-2">
+    <label class="label">Address</label>
+    <div class="control">
+      <input class="input" name="Address" placeholder="Address" required>
+    </div>
+  </div>
   <div class="select mb-2 is-fullwidth">
     <select name="Barangay" required>
       <option value="">Select Barangay</option>
@@ -131,28 +100,18 @@ hr {
     <label><input type="radio" name="Gender" value="Male" required> Male</label>
     <label class="ml-3"><input type="radio" name="Gender" value="Female"> Female</label>
   </div>
-<div class="field mb-2">
-  <label class="label">Birthdate</label>
-  <div class="control">
-    <input class="input" type="date" name="Date of Birth" required>
+  <div class="field mb-2">
+    <label class="label">Birthdate</label>
+    <div class="control">
+      <input class="input" type="date" name="Date of Birth" required>
+    </div>
   </div>
-</div>
-
   <div class="field mb-2">
     <label class="label">Contact Number</label>
     <div class="control">
-      <input
-        class="input"
-        name="Contact No."
-        placeholder="09XXXXXXXXX"
-        required
-        inputmode="numeric"
-        pattern="\d{11}"
-        maxlength="12"
-        title="Contact number must be exactly 12 digits (e.g. 09XXXXXXXXX)">
+      <input class="input" name="Contact No." placeholder="639XXXXXXXXX" required inputmode="numeric" pattern="\d{12}" maxlength="12" title="Contact number must be exactly 12 digits (639XXXXXXXXX)">
     </div>
-</div>
-
+  </div>
   <div class="select mb-2 is-fullwidth">
     <select name="Received By" required>
       <option value="">Received By</option>
@@ -166,13 +125,12 @@ hr {
       <option>Burial</option><option>Medical</option><option>Educational</option>
     </select>
   </div>
-<div class="field mb-3">
-  <label class="label">Received Date</label>
-  <div class="control">
-    <input class="input" type="date" id="receivedDate" name="Received Date" required>
+  <div class="field mb-3">
+    <label class="label">Received Date</label>
+    <div class="control">
+      <input class="input" type="date" id="receivedDate" name="Received Date" required>
+    </div>
   </div>
-</div>
-
   <div class="buttons mt-3">
     <button class="button is-primary" id="submitBtn">Submit</button>
     <button type="button" class="button is-danger" id="cancelBtn">Cancel</button>
@@ -185,7 +143,7 @@ hr {
 <div class="field">
   <label class="label">Search Records</label>
   <div class="control">
-    <input class="input" id="searchInput" type="text" placeholder="Search by name, address, barangay, contact number, assistance, received by">
+    <input class="input" id="searchInput" type="text" placeholder="Search by name, address, barangay, contact number, assistance, received by, status">
   </div>
 </div>
 
@@ -193,86 +151,71 @@ hr {
   <thead>
     <tr>
       <th>Timestamp</th><th>Address</th><th>Barangay</th><th>Name</th><th>Gender</th>
-      <th>Date of Birth</th><th>Age</th><th>Contact No.</th><th>Assistance Needed</th>
+      <th>Birthdate</th><th>Age</th><th>Contact No.</th><th>Assistance Needed</th>
       <th>Received By</th><th>Received Date</th><th>Status</th>
-
     </tr>
   </thead>
   <tbody id="recordsTable"></tbody>
 </table>
+
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbyKOiF_MoJzATzLSOhFSsTWdgU-ZJoGBAuJeM37LB7zDC19WahnfRGp117hrGxFlwCQlg/exec";
-const form = document.getElementById("form");
-const receivedDate = document.getElementById("receivedDate");
-const msg = document.getElementById("msg");
-const cancelBtn = document.getElementById("cancelBtn");
-const tableBody = document.getElementById("recordsTable");
-const searchInput = document.getElementById("searchInput");
+/* -------- LOGIN PERSISTENCE & LOGOUT -------- */
+const loginForm = document.getElementById("loginForm");
+const loginMsg = document.getElementById("loginMsg");
+const loginContainer = document.getElementById("loginContainer");
+const mainContent = document.getElementById("mainContent");
+const logoutBtn = document.getElementById("logoutBtn");
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "s0c1al@123";
 
-/*let records = [];
-const today = new Date().toISOString().split("T")[0];
-receivedDate.value = today;
-receivedDate.min = today;
-receivedDate.max = today;*/
+// Check if logged in
+if(localStorage.getItem("loggedIn")==="true"){
+  loginContainer.style.display="none";
+  mainContent.style.display="block";
+}
 
-cancelBtn.onclick = () => {
-  form.reset();
-  receivedDate.value = today;
-  msg.classList.add("is-hidden");
+loginForm.onsubmit = function(e){
+  e.preventDefault();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  if(username === ADMIN_USERNAME && password === ADMIN_PASSWORD){
+    localStorage.setItem("loggedIn","true");
+    loginContainer.style.display="none";
+    mainContent.style.display="block";
+  } else {
+    loginMsg.className="notification is-danger";
+    loginMsg.textContent="❌ Invalid username or password!";
+    loginMsg.classList.remove("is-hidden");
+  }
 };
 
+logoutBtn.onclick = () => {
+  localStorage.removeItem("loggedIn");
+  mainContent.style.display="none";
+  loginContainer.style.display="block";
+  loginForm.reset();
+};
 
-function formatPHDateTime(dateStr){
-  const d = new Date(dateStr);
-  return d.toLocaleString("en-PH", {
-    timeZone: "Asia/Manila",
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true
-  });
-}
+/* -------- SYSTEM VARIABLES -------- */
+const scriptURL="https://script.google.com/macros/s/AKfycbyKOiF_MoJzLSOhFSsTWdgU-ZJoGBAuJeM37LB7zDC19WahnfRGp117hrGxFlwCQlg/exec";
+const form=document.getElementById("form");
+const receivedDate=document.getElementById("receivedDate");
+const msg=document.getElementById("msg");
+const cancelBtn=document.getElementById("cancelBtn");
+const tableBody=document.getElementById("recordsTable");
+const searchInput=document.getElementById("searchInput");
+let records=[];
 
-function formatDateOnly(dateStr){
-  if(!dateStr) return "";
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("en-PH", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit"
-  });
-}
+/* -------- FORMATTERS -------- */
+function formatPHDateTime(dateStr){const d=new Date(dateStr);return d.toLocaleString("en-PH",{timeZone:"Asia/Manila",year:"numeric",month:"long",day:"2-digit",hour:"numeric",minute:"2-digit",hour12:true});}
+function formatDateOnly(dateStr){if(!dateStr)return"";const d=new Date(dateStr);return d.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"2-digit"});}
+function calculateExactAge(birthDate){if(!birthDate)return"";const today=new Date();const birth=new Date(birthDate);let age=today.getFullYear()-birth.getFullYear();const monthDiff=today.getMonth()-birth.getMonth();const dayDiff=today.getDate()-birth.getDate();if(monthDiff<0||(monthDiff===0&&dayDiff<0))age--;return age;}
+function showError(message){msg.className="notification is-danger";msg.textContent=message;msg.classList.remove("is-hidden");}
 
-function calculateExactAge(birthDate){
-  if(!birthDate) return "";
-
-  const today = new Date();
-  const birth = new Date(birthDate);
-
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  const dayDiff = today.getDate() - birth.getDate();
-
-  // If birthday has NOT occurred yet this year
-  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    age--;
-  }
-
-  return age;
-}
-
-
-
-
-function renderTable(data){
-  tableBody.innerHTML = "";
-  data.forEach(item=>{
-    const row=document.createElement("tr");
-row.innerHTML = `
+/* -------- RENDER TABLE -------- */
+function renderTable(data){tableBody.innerHTML="";data.forEach(item=>{const row=document.createElement("tr");row.innerHTML=`
   <td>${formatPHDateTime(item.Timestamp)}</td>
   <td>${item.Address}</td>
   <td>${item.Barangay}</td>
@@ -285,138 +228,55 @@ row.innerHTML = `
   <td>${item.ReceivedBy}</td>
   <td>${formatDateOnly(item.ReceivedDate)}</td>
   <td>${item.Status}</td>
-`;
+`;tableBody.appendChild(row);});}
 
-    tableBody.appendChild(row);
-  });
-}
-
-async function loadRecords(){
-  try{
-    const res = await fetch(scriptURL);
-    const json = await res.json();
-    if(json.status==='success'){
-      records=json.data.map(r=>({
-        Timestamp: r.Timestamp,
-        Address: r.Address,
-        Barangay: r.Barangay,
-        Name: `${r["First Name"]} ${r["Middle Name"]||""} ${r["Last Name"]}`,
-        Gender: r.Gender,
-        Birthdate: r["Date of Birth"],
-        Age: calculateExactAge(r["Date of Birth"]),
-        Contact: r["Contact No."],
-        Assistance: r["Assistance Needed"],
-        ReceivedBy: r["Received By"],
-        ReceivedDate: r["Received Date"],
-        Status: r.Status || "Not Claimed"
-
-      }));
-      renderTable(records);
-    }
-  }catch(err){ console.error(err); }
-}
+/* -------- LOAD RECORDS -------- */
+async function loadRecords(){try{const res=await fetch(scriptURL);const json=await res.json();if(json.status==='success'){records=json.data.map(r=>({Timestamp:r.Timestamp,Address:r.Address,Barangay:r.Barangay,Name:`${r["First Name"]} ${r["Middle Name"]||""} ${r["Last Name"]}`,Gender:r.Gender,Birthdate:r["Date of Birth"],Age:calculateExactAge(r["Date of Birth"]),Contact:r["Contact No."],Assistance:r["Assistance Needed"],ReceivedBy:r["Received By"],ReceivedDate:r["Received Date"],Status:r.Status||"Not Claimed"}));renderTable(records);}}catch(err){console.error(err);}}
 loadRecords();
 
-searchInput.addEventListener("keyup",()=>{
-  const keyword = searchInput.value.toLowerCase();
-  const filtered = records.filter(r=> Object.values(r).join(" ").toLowerCase().includes(keyword));
-  renderTable(filtered);
-});
+/* -------- SEARCH -------- */
+searchInput.addEventListener("keyup",()=>{const keyword=searchInput.value.toLowerCase();const filtered=records.filter(r=>Object.values(r).join(" ").toLowerCase().includes(keyword));renderTable(filtered);});
 
-function isDuplicate(first,middle,last){
-  return records.some(r=>r.Name.toLowerCase()===`${first} ${middle||""} ${last}`.toLowerCase());
-}
+/* -------- CANCEL BUTTON -------- */
+cancelBtn.onclick = () => { form.reset(); msg.classList.add("is-hidden"); };
 
-function validateForm() {
-  const contact = form["Contact No."].value.trim();
-  const birthDate = form["Date of Birth"].value;
-  const received = form["Received Date"].value;
+/* -------- DUPLICATE CHECK -------- */
+function isDuplicate(first,middle,last){return records.some(r=>r.Name.toLowerCase()===`${first} ${middle||""} ${last}`.toLowerCase());}
 
-  // Contact number validation
-  if (!/^\d{11}$/.test(contact)) {
-    showError("❌ Contact number must be EXACTLY 12 digits (639XXXXXXXXX).");
-    return false;
-  }
-
-  // Birthdate validation
-  if (!birthDate || new Date(birthDate) > new Date()) {
-    showError("❌ Birthdate is invalid or in the future.");
-    return false;
-  }
-
-  // Received date validation
-  if (!received) {
-    showError("❌ Received Date is required.");
-    return false;
-  }
-
-  return true;
-}
-
-function showError(message) {
-  msg.className = "notification is-danger";
-  msg.textContent = message;
-  msg.classList.remove("is-hidden");
-}
-
-
-
-form.onsubmit = async e => {
+/* -------- FORM SUBMIT -------- */
+form.onsubmit = async e=>{
   e.preventDefault();
+  const first=form["First Name"].value.trim();
+  const middle=form["Middle Name"].value.trim();
+  const last=form["Last Name"].value.trim();
+  const contact=form["Contact No."].value.trim();
+  const birth=form["Date of Birth"].value;
+  const received=form["Received Date"].value;
 
-  // 🔒 WEBSITE VALIDATION FIRST
-  if (!validateForm()) return;
+  if(!/^\d{12}$/.test(contact)){ showError("❌ Contact number must be exactly 12 digits (639XXXXXXXXX)."); return; }
+  if(!birth || new Date(birth)>new Date()){ showError("❌ Birthdate invalid or future."); return; }
+  if(!received){ showError("❌ Received Date required."); return; }
+  if(isDuplicate(first,middle,last)){ showError("❌ Duplicate name entry!"); return; }
 
-  const first = form["First Name"].value.trim();
-  const middle = form["Middle Name"].value.trim();
-  const last = form["Last Name"].value.trim();
+  msg.className="notification is-info"; msg.textContent="Submitting..."; msg.classList.remove("is-hidden");
 
-  if (isDuplicate(first, middle, last)) {
-    showError("❌ Duplicate name entry!");
-    return;
-  }
+  const fd=new FormData(form);
+  const data=Object.fromEntries(fd.entries());
+  data.Age=Number(calculateExactAge(data["Date of Birth"]));
+  data.Status=data.Status||"Not Claimed";
 
-  msg.className = "notification is-info";
-  msg.textContent = "Submitting...";
-  msg.classList.remove("is-hidden");
-
-  const fd = new FormData(form);
-  const data = Object.fromEntries(fd.entries());
-
-  const age = calculateExactAge(data["Date of Birth"]);
-  data.Age = Number(age);
-
-  const res = await fetch(scriptURL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
-
-  const json = await res.json();
-
-  if (json.status === "success") {
-    records.push({
-      Timestamp: new Date().toISOString(),
-      Address: data.Address,
-      Barangay: data.Barangay,
-      Name: `${data["First Name"]} ${data["Middle Name"] || ""} ${data["Last Name"]}`,
-      Gender: data.Gender,
-      Birthdate: data["Date of Birth"],
-      Age: age,
-      Contact: data["Contact No."],
-      Assistance: data["Assistance Needed"],
-      ReceivedBy: data["Received By"],
-      ReceivedDate: data["Received Date"]
-    });
-
-    renderTable(records);
-    form.reset();
-    msg.className = "notification is-success";
-    msg.textContent = "✅ Data validated and saved successfully.";
-  } else {
-    showError("❌ Error saving data.");
-  }
+  try{
+    const res=await fetch(scriptURL,{method:"POST",body:JSON.stringify(data)});
+    const json=await res.json();
+    if(json.status==="success"){
+      records.push({Timestamp:new Date().toISOString(),Address:data.Address,Barangay:data.Barangay,Name:`${data["First Name"]} ${data["Middle Name"]||""} ${data["Last Name"]}`,Gender:data.Gender,Birthdate:data["Date of Birth"],Age:data.Age,Contact:data["Contact No."],Assistance:data["Assistance Needed"],ReceivedBy:data["Received By"],ReceivedDate:data["Received Date"],Status:data.Status});
+      renderTable(records);
+      form.reset();
+      msg.className="notification is-success";
+      msg.textContent="✅ Data validated and saved successfully.";
+    } else { showError("❌ Error saving data."); }
+  } catch(err){ showError("❌ Network or server error."); console.error(err); }
 };
-
 </script>
 </body>
 </html>
